@@ -24,6 +24,7 @@ body{
 .goal{
     width: 40px;
     height: 40px;
+    box-shadow: 0 2px 0 0.3px #000000;
 }
 
 .goal{
@@ -35,4 +36,10 @@ body{
 .node {
     cursor: pointer;
     border: solid 2px #50d890;
+    transition: 0.3s;
+}
+
+.node-true{
+    box-shadow:none;
+    background-color: #50d890;
 }
