@@ -25,21 +25,27 @@ body{
     width: 40px;
     height: 40px;
     box-shadow: 0 2px 0 0.3px #000000;
+    transition: 0.3s;
+
 }
 
 .goal{
-    background-color: #4f98ca;
-    border: solid 2px #4f98ca;
+    border: solid 2px #50d890;
+}
 
+.goal-achived{
+    box-shadow:none;
+    background-color: #50d890;
+    transform: translate(0 , 2px);
 }
 
 .node {
     cursor: pointer;
-    border: solid 2px #50d890;
-    transition: 0.3s;
+    border: solid 2px #4f98ca;
 }
 
 .node-true{
     box-shadow:none;
-    background-color: #50d890;
+    background-color: #4f98ca;
+    transform: translate(0, 2px);
 }
