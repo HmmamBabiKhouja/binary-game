@@ -2,7 +2,8 @@ let table = document.querySelector(".table-block");
 
 let buttons= document.querySelectorAll(".node");
 let goals = document.querySelectorAll(".goal");// this might not needed
-let rowLength = table.rows.length;// be sure to suptract it when you add the col goals
+
+let rowLength = table.rows.length -1;
 let colLength= table.rows.item(0).cells.length-1;
 buttons.forEach((button)=> button.addEventListener("click", trueOrFalse));
 
@@ -48,15 +49,27 @@ function checkRow(row, col){
 
 // generates rows's goals
 function goalsCreaterR(){
-    for ( let i=0;i<rowLength;i++){
+    for ( let col=0;col<rowLength;col++){
         let randomNum = Math.floor(Math.random() * (Math.pow(2, rowLength) - 1))+1;
-        table.rows.item(i).cells.item(rowLength).innerHTML= randomNum;
+        table.rows.item(col).cells.item(rowLength).innerHTML= randomNum;
     }
 }
 
 // generates columns's goals
+// for compatibility's sake, it won't generate like the goalsCreaterR()
+// but it will collect the columns cells and set it as goal 
 function goalsCreaterC() {
-
+    let values=[];
+    
+    for( let col=0; col< rowLength; col++ ){
+        values=[];
+        for( let row=0; row< colLength; row++ ){
+            values.push(table.rows.item(row).cells.item(col).innerHTML);
+        }
+        console.log(values)
+        table.rows.item(rowLength).cells.item(col).innerHTML = parseInt(values.join(""),2).toString(10);
+        //    
+    }
 }
 
 round();
