@@ -2,11 +2,16 @@ let table = document.querySelector(".table-block");
 
 let buttons= document.querySelectorAll(".node");
 let goals = document.querySelectorAll(".goal");// this might not needed
-// console.log(table.rows.item(3).cells.item(2).innerHTML);
-// when you collect data from user try to be sure to remove last row and last cell of each row 
-
+let rowLength = table.rows.length;// be sure to suptract it when you add the col goals
+let colLength= table.rows.item(0).cells.length-1;
 buttons.forEach((button)=> button.addEventListener("click", trueOrFalse));
 
+
+function round(){
+
+    goalsCreaterR();
+    goalsCreaterC();
+}
 
 function trueOrFalse(){
     let row = this.parentElement.rowIndex;
@@ -27,7 +32,7 @@ function trueOrFalse(){
 
 function checkRow(row, col){
     let tableRow = table.rows.item(row);
-    let rowGoal= tableRow.cells.item(tableRow.cells.length-1).innerHTML;
+    let rowGoal= tableRow.cells.item(colLength).innerHTML;
     let values=[];
 
     for ( let cell = 0; cell< tableRow.cells.length-1; cell++){
@@ -35,8 +40,23 @@ function checkRow(row, col){
     }
 
     if(rowGoal== parseInt(values.join(""),2).toString(10)){
-        tableRow.cells.item(tableRow.cells.length - 1).classList.add("goal-achived");
+        tableRow.cells.item(colLength).classList.add("goal-achived");
     }else{
-        tableRow.cells.item(tableRow.cells.length - 1).classList.remove("goal-achived");
+        tableRow.cells.item(colLength).classList.remove("goal-achived");
     }
 }
+
+// generates rows's goals
+function goalsCreaterR(){
+    for ( let i=0;i<rowLength;i++){
+        let randomNum = Math.floor(Math.random() * (Math.pow(2, rowLength) - 1))+1;
+        table.rows.item(i).cells.item(rowLength).innerHTML= randomNum;
+    }
+}
+
+// generates columns's goals
+function goalsCreaterC() {
+
+}
+
+round();
