@@ -10,8 +10,8 @@ buttons.forEach((button)=> button.addEventListener("click", trueOrFalse));
 
 function round(){
 
-    goalsCreaterR();
-    goalsCreaterC();
+    rowGoalsGenerater();
+    colGoalsGenerater();
 }
 
 function trueOrFalse(){
@@ -28,27 +28,42 @@ function trueOrFalse(){
     }
     
     checkRow(row);
-    // checkCol(col);
+    checkCol(col);
 }
 
-function checkRow(row, col){
-    let tableRow = table.rows.item(row);
-    let rowGoal= tableRow.cells.item(colLength).innerHTML;
-    let values=[];
+function checkRow(row){
+    let rowGoal= table.rows.item(row).cells.item(colLength).innerHTML;
+    let userInput=[];
 
-    for ( let cell = 0; cell< tableRow.cells.length-1; cell++){
-        values.push(tableRow.cells.item(cell).innerHTML);
+    for ( let column = 0; column< rowLength; column++){
+        userInput.push(table.rows.item(row).cells.item(column).innerHTML);
     }
 
-    if(rowGoal== parseInt(values.join(""),2).toString(10)){
-        tableRow.cells.item(colLength).classList.add("goal-achived");
+    if(rowGoal== parseInt(userInput.join(""),2).toString(10)){
+        table.rows.item(row).cells.item(colLength).classList.add("goal-achived");
     }else{
-        tableRow.cells.item(colLength).classList.remove("goal-achived");
+        table.rows.item(row).cells.item(colLength).classList.remove("goal-achived");
     }
 }
+
+function checkCol(col){
+    let colGoal = table.rows.item(rowLength).cells.item(col).innerHTML;
+    let userInput=[];
+
+    for( let row=0; row< colLength; row++){
+        userInput.push(table.rows.item(row).cells.item(col).innerHTML)
+    }
+
+    if (colGoal == parseInt(userInput.join(""), 2).toString(10)) {
+        table.rows.item(rowLength).cells.item(col).classList.add("goal-achived");
+    } else {
+        table.rows.item(rowLength).cells.item(col).classList.remove("goal-achived");
+    }
+}
+
 
 // generates rows's goals
-function goalsCreaterR(){
+function rowGoalsGenerater(){
     for ( let col=0;col<rowLength;col++){
         let randomNum = Math.floor(Math.random() * (Math.pow(2, rowLength) - 1))+1;
         table.rows.item(col).cells.item(rowLength).innerHTML= randomNum;
@@ -56,19 +71,31 @@ function goalsCreaterR(){
 }
 
 // generates columns's goals
-// for compatibility's sake, it won't generate like the goalsCreaterR()
+// for compatibility's sake, it won't generate like the rowGoalsGenerater()
 // but it will collect the columns cells and set it as goal 
-function goalsCreaterC() {
-    let values=[];
+function colGoalsGenerater() {
+    let rowsGoals = [];
+
+    for ( let row =0; row<colLength; row++){
+        rowsGoals.push(table.rows.item(row).cells.item(rowLength).innerHTML);
+    }
     
-    for( let col=0; col< rowLength; col++ ){
-        values=[];
-        for( let row=0; row< colLength; row++ ){
-            values.push(table.rows.item(row).cells.item(col).innerHTML);
+    rowsGoals=rowsGoals.map((item)=>{
+        item=Number(item).toString(2);  
+        
+        if( item.length<rowLength){
+            let addZeros="0".repeat(rowLength-item.length);
+            item=addZeros.concat(item)
         }
-        console.log(values)
-        table.rows.item(rowLength).cells.item(col).innerHTML = parseInt(values.join(""),2).toString(10);
-        //    
+        return item.split("")
+    })
+
+    for( let col=0; col<colLength; col++){
+        let colGoal= []
+        for( let row=0; row<rowLength; row++){
+            colGoal.push(rowsGoals[row][col]);
+        }
+        table.rows.item(rowLength).cells.item(col).innerHTML = parseInt(colGoal.join(""),2).toString(10);
     }
 }
 
