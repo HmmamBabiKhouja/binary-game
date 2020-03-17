@@ -1,19 +1,22 @@
 let table = document.querySelector(".table-block");
 
 let buttons= document.querySelectorAll(".node");
-let goals = document.querySelectorAll(".goal");// this might not needed
+// let goals = document.querySelectorAll(".goal");// this might not needed
+buttons.forEach(button => button.addEventListener("click", trueOrFalse));
 
 let rowLength = table.rows.length -1;
 let colLength= table.rows.item(0).cells.length-1;
-buttons.forEach((button)=> button.addEventListener("click", trueOrFalse));
+// added for clarity's sake
+let rowGoal=rowLength;
+let colGoal=colLength;
 
+function init(){
 
-function round(){
-
-    rowGoalsGenerater();
-    colGoalsGenerater();
+    rowsGoalsGenerater();
+    colsGoalsGenerater();
 }
 
+// turns the value of a node 1/0 or true/ false
 function trueOrFalse(){
     let row = this.parentElement.rowIndex;
     let col= this.cellIndex;
@@ -31,56 +34,24 @@ function trueOrFalse(){
     checkCol(col);
 }
 
-function checkRow(row){
-    let rowGoal= table.rows.item(row).cells.item(colLength).innerHTML;
-    let userInput=[];
-
-    for ( let column = 0; column< rowLength; column++){
-        userInput.push(table.rows.item(row).cells.item(column).innerHTML);
-    }
-
-    if(rowGoal== parseInt(userInput.join(""),2).toString(10)){
-        table.rows.item(row).cells.item(colLength).classList.add("goal-achived");
-    }else{
-        table.rows.item(row).cells.item(colLength).classList.remove("goal-achived");
-    }
-}
-
-function checkCol(col){
-    let colGoal = table.rows.item(rowLength).cells.item(col).innerHTML;
-    let userInput=[];
-
-    for( let row=0; row< colLength; row++){
-        userInput.push(table.rows.item(row).cells.item(col).innerHTML)
-    }
-
-    if (colGoal == parseInt(userInput.join(""), 2).toString(10)) {
-        table.rows.item(rowLength).cells.item(col).classList.add("goal-achived");
-    } else {
-        table.rows.item(rowLength).cells.item(col).classList.remove("goal-achived");
-    }
-}
-
-
 // generates rows's goals
-function rowGoalsGenerater(){
+function rowsGoalsGenerater(){
     for ( let col=0;col<rowLength;col++){
         let randomNum = Math.floor(Math.random() * (Math.pow(2, rowLength) - 1))+1;
-        table.rows.item(col).cells.item(rowLength).innerHTML= randomNum;
+        table.rows.item(col).cells.item(rowGoal).innerHTML= randomNum;
     }
 }
 
 // generates columns's goals
-// for compatibility's sake, it won't generate like the rowGoalsGenerater()
-// but it will collect the columns cells and set it as goal 
-function colGoalsGenerater() {
-    let rowsGoals = [];
+// for compatibility's sake, they will be made from rows goals 
+function colsGoalsGenerater() {
+    let goals = [];// row's goals
 
     for ( let row =0; row<colLength; row++){
-        rowsGoals.push(table.rows.item(row).cells.item(rowLength).innerHTML);
+        goals.push(table.rows.item(row).cells.item(rowGoal).innerHTML);
     }
     
-    rowsGoals=rowsGoals.map((item)=>{
+    goals=goals.map((item)=>{
         item=Number(item).toString(2);  
         
         if( item.length<rowLength){
@@ -91,12 +62,49 @@ function colGoalsGenerater() {
     })
 
     for( let col=0; col<colLength; col++){
-        let colGoal= []
+        let newGoal= []// col goal 
         for( let row=0; row<rowLength; row++){
-            colGoal.push(rowsGoals[row][col]);
+            newGoal.push(goals[row][col]);
         }
-        table.rows.item(rowLength).cells.item(col).innerHTML = parseInt(colGoal.join(""),2).toString(10);
+        newGoal = parseInt(newGoal.join(""), 2).toString(10);
+        if (newGoal==0){// to avoid zero values on col goals
+            setTimeout(init, 10);
+        }
+
+        table.rows.item(rowGoal).cells.item(col).innerHTML =newGoal;
     }
 }
 
-round();
+// checks if nodes values equals the row's goal
+function checkRow(row){
+    let rowGoal= table.rows.item(row).cells.item(colGoal).innerHTML;
+    let userInput=[];
+
+    for ( let column = 0; column< rowLength; column++){
+        userInput.push(table.rows.item(row).cells.item(column).innerHTML);
+    }
+
+    if(rowGoal== parseInt(userInput.join(""),2).toString(10)){
+        table.rows.item(row).cells.item(colGoal).classList.add("goal-achived");
+    }else{
+        table.rows.item(row).cells.item(colGoal).classList.remove("goal-achived");
+    }
+}
+
+// checks if nodes values equals the col's goal
+function checkCol(col){
+    let colGoal = table.rows.item(rowGoal).cells.item(col).innerHTML;
+    let userInput=[];
+
+    for( let row=0; row< colLength; row++){
+        userInput.push(table.rows.item(row).cells.item(col).innerHTML)
+    }
+
+    if (colGoal == parseInt(userInput.join(""), 2).toString(10)) {
+        table.rows.item(rowGoal).cells.item(col).classList.add("goal-achived");
+    } else {
+        table.rows.item(rowGoal).cells.item(col).classList.remove("goal-achived");
+    }
+}
+
+init();
