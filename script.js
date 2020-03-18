@@ -1,8 +1,9 @@
 let table = document.querySelector(".table-block");
 
 let buttons= document.querySelectorAll(".node");
-// let goals = document.querySelectorAll(".goal");// this might not needed
 buttons.forEach(button => button.addEventListener("click", trueOrFalse));
+
+let goals = document.querySelectorAll(".goal");
 
 let rowLength = table.rows.length -1;
 let colLength= table.rows.item(0).cells.length-1;
@@ -11,7 +12,7 @@ let rowGoal=rowLength;
 let colGoal=colLength;
 
 function init(){
-
+    resetVals();    
     rowsGoalsGenerater();
     colsGoalsGenerater();
 }
@@ -32,6 +33,10 @@ function trueOrFalse(){
     
     checkRow(row);
     checkCol(col);
+    
+    if(checkGoals()){
+        init();
+    }
 }
 
 // generates rows's goals
@@ -45,13 +50,13 @@ function rowsGoalsGenerater(){
 // generates columns's goals
 // for compatibility's sake, they will be made from rows goals 
 function colsGoalsGenerater() {
-    let goals = [];// row's goals
+    let goalsArray = [];// row's goals
 
     for ( let row =0; row<colLength; row++){
-        goals.push(table.rows.item(row).cells.item(rowGoal).innerHTML);
+        goalsArray.push(table.rows.item(row).cells.item(rowGoal).innerHTML);
     }
     
-    goals=goals.map((item)=>{
+    goalsArray=goalsArray.map((item)=>{
         item=Number(item).toString(2);  
         
         if( item.length<rowLength){
@@ -64,7 +69,7 @@ function colsGoalsGenerater() {
     for( let col=0; col<colLength; col++){
         let newGoal= []// col goal 
         for( let row=0; row<rowLength; row++){
-            newGoal.push(goals[row][col]);
+            newGoal.push(goalsArray[row][col]);
         }
         newGoal = parseInt(newGoal.join(""), 2).toString(10);
         if (newGoal==0){// to avoid zero values on col goals
@@ -105,6 +110,24 @@ function checkCol(col){
     } else {
         table.rows.item(rowGoal).cells.item(col).classList.remove("goal-achived");
     }
+}
+
+function checkGoals(){
+    for ( let node=0;node< goals.length;node++){
+        let goalColor = window.getComputedStyle(goals[node], null).getPropertyValue("background-color");  
+        if (goalColor != "rgb(80, 216, 144)") return false;
+    }
+    return true;
+}
+
+function resetVals(){
+    console.log("hi")
+    buttons.forEach((button)=> {
+        button.classList.remove("node-true");
+        button.innerHTML = 0;
+    })
+
+    goals.forEach((goal)=> goal.classList.remove("goal-achived"));
 }
 
 init();
