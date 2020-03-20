@@ -115,9 +115,7 @@ function checkCol(col){
 
 function checkGoals(){
     for ( let goal=0;goal< goals.length;goal++){
-        if (!goals[goal].classList.contains("goal-achived")) {
-            return false;
-        }
+        if (!goals[goal].classList.contains("goal-achived")) return false;
     }
     return true;
 }

@@ -3,12 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="queries.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/queries.css">
     <link href="https://fonts.googleapis.com/css?family=Bellota+Text&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
     <title>Binary Game</title>
 </head>
 <body onmousedown = 'return false' onselectstart = 'return false'>
+    <nav>
+        <div class="logo">
+            <a href="https://hmmam-portfolio.netlify.com/">
+                <img class="img-logo" src="img/logo.svg" alt="my-logo">
+            </a>
+        </div>
+        <div class="info">
+            <div class="selection-block">
+                <label class="level-label" for="levels">Level : </label>
+                <select id="levels" onchange="changeLevel()">
+                    <option value="20">Easy</option>
+                    <option value="14" selected>Meduim</option>
+                    <option value="10">Hard</option>
+                </select>
+            </div>
+            <div class="text-info">
+                <div class="output-block">
+                    <h3 class="output-info">Time Left: </h3>
+                    <span id="seconds"></span>
+                </div>
+                <div class="output-block">
+                    <h3 class="output-info">Score: </h3>
+                    <span id="score">0</span>
+                </div>
+            </div>
+        </div>
+    </nav>
     <div class="container">
         <table class="table-block" cellspacing="15">
             <tr class="row">
@@ -60,6 +88,6 @@
             </tr>    
         </table>
     </div>
-    <script src="script.js"></script>
+    <script src="scripts/script.js"></script>
 </body>
 </html>
