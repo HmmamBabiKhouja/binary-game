@@ -33,7 +33,7 @@ function trueOrFalse(){
     
     checkRow(row);
     checkCol(col);
-    
+
     if(checkGoals()){
         init();
     }
@@ -110,24 +110,29 @@ function checkCol(col){
     } else {
         table.rows.item(rowGoal).cells.item(col).classList.remove("goal-achived");
     }
+
 }
 
 function checkGoals(){
-    for ( let node=0;node< goals.length;node++){
-        let goalColor = window.getComputedStyle(goals[node], null).getPropertyValue("background-color");  
-        if (goalColor != "rgb(80, 216, 144)") return false;
+    for ( let goal=0;goal< goals.length;goal++){
+        if (!goals[goal].classList.contains("goal-achived")) {
+            return false;
+        }
     }
     return true;
 }
 
 function resetVals(){
-    console.log("hi")
-    buttons.forEach((button)=> {
-        button.classList.remove("node-true");
-        button.innerHTML = 0;
-    })
+    //buttons.forEach((button)=> {
+    for ( let button=0; button< buttons.length; button++){
+        buttons[button].classList.remove("node-true");
+        buttons[button].innerHTML = 0;
+    }
 
-    goals.forEach((goal)=> goal.classList.remove("goal-achived"));
+    //goals.forEach((goal)=>
+    for ( let goal=0; goal< goals.length; goal++){
+        goals[goal].classList.remove("goal-achived")
+    }
 }
 
 init();

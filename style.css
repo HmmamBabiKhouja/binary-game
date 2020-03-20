@@ -39,9 +39,9 @@ body{
     transform: translate(0 , 2px);
 }
 
-.node {
-    cursor: pointer;
+.node{
     border: solid 2px #4f98ca;
+    cursor: pointer;
 }
 
 .node-true{
