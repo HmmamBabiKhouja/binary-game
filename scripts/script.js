@@ -1,3 +1,7 @@
+///////////////////
+// DOC variables //
+///////////////////
+
 let table = document.querySelector(".table-block");
 
 let buttons= document.querySelectorAll(".node");
@@ -5,16 +9,44 @@ buttons.forEach(button => button.addEventListener("click", trueOrFalse));
 
 let goals = document.querySelectorAll(".goal");
 
+let scoreDsipaly = document.querySelector("#score");
+let dispalaySeconds = document.querySelector("#seconds");
+
+//////////////////////
+// global variables //
+//////////////////////
+
+let roundTime = 20+1;
 let rowLength = table.rows.length -1;
 let colLength= table.rows.item(0).cells.length-1;
 // added for clarity's sake
 let rowGoal=rowLength;
 let colGoal=colLength;
+let score=0;
+
+///////////////
+// functions // 
+///////////////
 
 function init(){
-    resetVals();    
+    resetVals();
+
     rowsGoalsGenerater();
     colsGoalsGenerater();
+    
+    
+}
+
+function resetVals() {
+    roundTime = 20+1;
+    for (let button = 0; button < buttons.length; button++) {
+        buttons[button].classList.remove("node-true");
+        buttons[button].innerHTML = 0;
+    }
+
+    for (let goal = 0; goal < goals.length; goal++) {
+        goals[goal].classList.remove("goal-achived");
+    }
 }
 
 // turns the value of a node 1/0 or true/ false
@@ -35,6 +67,8 @@ function trueOrFalse(){
     checkCol(col);
 
     if(checkGoals()){
+        score+=rowLength;
+        scoreDsipaly.innerHTML=score;
         init();
     }
 }
@@ -75,7 +109,7 @@ function colsGoalsGenerater() {
         if (newGoal==0){// to avoid zero values on col goals
             setTimeout(init, 10);
         }
-
+        
         table.rows.item(rowGoal).cells.item(col).innerHTML =newGoal;
     }
 }
@@ -110,7 +144,6 @@ function checkCol(col){
     } else {
         table.rows.item(rowGoal).cells.item(col).classList.remove("goal-achived");
     }
-
 }
 
 function checkGoals(){
@@ -120,17 +153,23 @@ function checkGoals(){
     return true;
 }
 
-function resetVals(){
-    //buttons.forEach((button)=> {
-    for ( let button=0; button< buttons.length; button++){
-        buttons[button].classList.remove("node-true");
-        buttons[button].innerHTML = 0;
-    }
-
-    //goals.forEach((goal)=>
-    for ( let goal=0; goal< goals.length; goal++){
-        goals[goal].classList.remove("goal-achived")
+function checkStatue(){
+    if(roundTime<=0 && !isPlaying){
     }
 }
 
+function timeReducer() {
+    if (roundTime > 0) {
+        roundTime--;
+    } else {
+        window.location.href = `../game-over-page/game-over.html?score=${score}`;
+    }
+    dispalaySeconds.innerHTML = roundTime;
+}
+
+////////////
+// runing //
+////////////
+
 init();
+setInterval(timeReducer, 1000);
