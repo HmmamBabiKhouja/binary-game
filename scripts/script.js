@@ -2,21 +2,23 @@
 // DOC variables //
 ///////////////////
 
-let table = document.querySelector(".table-block");
+let table = document.querySelector("#table-block");
 
 let buttons= document.querySelectorAll(".node");
 buttons.forEach(button => button.addEventListener("click", trueOrFalse));
-
 let goals = document.querySelectorAll(".goal");
 
 let scoreDsipaly = document.querySelector("#score");
 let dispalaySeconds = document.querySelector("#seconds");
 
+let levelSelector = document.querySelector("#levels");
+
 //////////////////////
 // global variables //
 //////////////////////
 
-let roundTime = 20+1;
+//let roundTime = 20+1;
+let roundTime=20000;
 let rowLength = table.rows.length -1;
 let colLength= table.rows.item(0).cells.length-1;
 // added for clarity's sake
@@ -33,12 +35,17 @@ function init(){
 
     rowsGoalsGenerater();
     colsGoalsGenerater();
-    
-    
 }
 
-function resetVals() {
-    roundTime = 20+1;
+function createTable(){
+
+}
+
+
+
+function resetVals(){
+    //roundTime = 20+1;
+    roundTime=200000;
     for (let button = 0; button < buttons.length; button++) {
         buttons[button].classList.remove("node-true");
         buttons[button].innerHTML = 0;
@@ -167,6 +174,9 @@ function timeReducer() {
     dispalaySeconds.innerHTML = roundTime;
 }
 
+function changeLevel(){
+    
+}
 ////////////
 // runing //
 ////////////
