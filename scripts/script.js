@@ -37,12 +37,6 @@ function init(){
     colsGoalsGenerater();
 }
 
-function createTable(){
-
-}
-
-
-
 function resetVals(){
     //roundTime = 20+1;
     roundTime=200000;

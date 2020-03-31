@@ -57,7 +57,7 @@ nav{
     justify-content: center;
 }
 
-.table-block{
+#table-block{
     transform: translate(0, -20px);
     border-spacing: 15px;
 }
