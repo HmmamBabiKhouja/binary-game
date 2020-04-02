@@ -8,7 +8,7 @@
 body {
     background-color: #272727;
     color: #effffb;
-    font-size: 24px;
+    font-size: 20px;
     font-family: 'Bellota Text', cursive;
 }
 
@@ -58,14 +58,14 @@ nav{
 }
 
 #table-block{
-    transform: translate(0, -20px);
+    transform: translate(0, -55px);
     border-spacing: 15px;
 }
 
 .node,
 .goal{
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     box-shadow: 0 2px 0 0.3px #000000;
     transition: 0.3s;
 }

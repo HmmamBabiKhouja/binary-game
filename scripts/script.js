@@ -12,34 +12,67 @@ let scoreDsipaly = document.querySelector("#score");
 let dispalaySeconds = document.querySelector("#seconds");
 
 let levelSelector = document.querySelector("#levels");
+levelSelector.addEventListener("change", createTable, false);
 
 //////////////////////
 // global variables //
 //////////////////////
 
-//let roundTime = 20+1;
-let roundTime=20000;
-let rowLength = table.rows.length -1;
-let colLength= table.rows.item(0).cells.length-1;
+let roundTime = 30+1;
+let tableSize = table.rows.length -1;
 // added for clarity's sake
-let rowGoal=rowLength;
-let colGoal=colLength;
+let goalPos=tableSize;
 let score=0;
 
 ///////////////
 // functions // 
 ///////////////
 
+function createTable(){
+    let lowestLevel=4;
+    tableSize = lowestLevel + levelSelector.selectedIndex;
+    goalPos = tableSize;
+    table.innerHTML="";
+
+    let cellClass;
+    for( let row=0;row<tableSize+1;row++){ // plus one so it can create goals too
+    
+        let currentRow=table.insertRow();
+        currentRow.className="row";
+
+        for ( let col = 0; col< tableSize+1; col++){ // plus one so it can create goals too
+            if(col === goalPos && row === goalPos){
+                break;
+            } 
+            
+            cellClass = "node";
+            if (row === goalPos || col === goalPos) {
+                cellClass = "goal";
+            }
+    
+            let currentCell = currentRow.insertCell();
+            currentCell.className=cellClass;
+            currentCell.innerHTML="0";
+        
+            
+        }
+    }
+    init();
+}
+
 function init(){
     resetVals();
+
+    buttons = document.querySelectorAll(".node");
+    buttons.forEach(button => button.addEventListener("click", trueOrFalse));
+    goals = document.querySelectorAll(".goal");
 
     rowsGoalsGenerater();
     colsGoalsGenerater();
 }
 
 function resetVals(){
-    //roundTime = 20+1;
-    roundTime=200000;
+    roundTime = 30+1;
     for (let button = 0; button < buttons.length; button++) {
         buttons[button].classList.remove("node-true");
         buttons[button].innerHTML = 0;
@@ -68,7 +101,7 @@ function trueOrFalse(){
     checkCol(col);
 
     if(checkGoals()){
-        score+=rowLength;
+        score+=tableSize;
         scoreDsipaly.innerHTML=score;
         init();
     }
@@ -76,9 +109,9 @@ function trueOrFalse(){
 
 // generates rows's goals
 function rowsGoalsGenerater(){
-    for ( let col=0;col<rowLength;col++){
-        let randomNum = Math.floor(Math.random() * (Math.pow(2, rowLength) - 1))+1;
-        table.rows.item(col).cells.item(rowGoal).innerHTML= randomNum;
+    for ( let col=0;col<tableSize;col++){
+        let randomNum = Math.floor(Math.random() * (Math.pow(2, tableSize) - 1))+1;
+        table.rows.item(col).cells.item(goalPos).innerHTML= randomNum;
     }
 }
 
@@ -87,23 +120,23 @@ function rowsGoalsGenerater(){
 function colsGoalsGenerater() {
     let goalsArray = [];// row's goals
 
-    for ( let row =0; row<colLength; row++){
-        goalsArray.push(table.rows.item(row).cells.item(rowGoal).innerHTML);
+    for ( let row =0; row<tableSize; row++){
+        goalsArray.push(table.rows.item(row).cells.item(goalPos).innerHTML);
     }
     
     goalsArray=goalsArray.map((item)=>{
         item=Number(item).toString(2);  
         
-        if( item.length<rowLength){
-            let addZeros="0".repeat(rowLength-item.length);
+        if( item.length<tableSize){
+            let addZeros="0".repeat(tableSize-item.length);
             item=addZeros.concat(item)
         }
         return item.split("")
     })
 
-    for( let col=0; col<colLength; col++){
+    for( let col=0; col<tableSize; col++){
         let newGoal= []// col goal 
-        for( let row=0; row<rowLength; row++){
+        for( let row=0; row<tableSize; row++){
             newGoal.push(goalsArray[row][col]);
         }
         newGoal = parseInt(newGoal.join(""), 2).toString(10);
@@ -111,39 +144,39 @@ function colsGoalsGenerater() {
             setTimeout(init, 10);
         }
         
-        table.rows.item(rowGoal).cells.item(col).innerHTML =newGoal;
+        table.rows.item(goalPos).cells.item(col).innerHTML =newGoal;
     }
 }
 
 // checks if nodes values equals the row's goal
 function checkRow(row){
-    let rowGoal= table.rows.item(row).cells.item(colGoal).innerHTML;
+    let rowGoal= table.rows.item(row).cells.item(goalPos).innerHTML;
     let userInput=[];
 
-    for ( let column = 0; column< rowLength; column++){
+    for ( let column = 0; column< tableSize; column++){
         userInput.push(table.rows.item(row).cells.item(column).innerHTML);
     }
 
     if(rowGoal== parseInt(userInput.join(""),2).toString(10)){
-        table.rows.item(row).cells.item(colGoal).classList.add("goal-achived");
+        table.rows.item(row).cells.item(goalPos).classList.add("goal-achived");
     }else{
-        table.rows.item(row).cells.item(colGoal).classList.remove("goal-achived");
+        table.rows.item(row).cells.item(goalPos).classList.remove("goal-achived");
     }
 }
 
 // checks if nodes values equals the col's goal
 function checkCol(col){
-    let colGoal = table.rows.item(rowGoal).cells.item(col).innerHTML;
+    let colGoal = table.rows.item(goalPos).cells.item(col).innerHTML;
     let userInput=[];
 
-    for( let row=0; row< colLength; row++){
+    for( let row=0; row< tableSize; row++){
         userInput.push(table.rows.item(row).cells.item(col).innerHTML)
     }
 
     if (colGoal == parseInt(userInput.join(""), 2).toString(10)) {
-        table.rows.item(rowGoal).cells.item(col).classList.add("goal-achived");
+        table.rows.item(goalPos).cells.item(col).classList.add("goal-achived");
     } else {
-        table.rows.item(rowGoal).cells.item(col).classList.remove("goal-achived");
+        table.rows.item(goalPos).cells.item(col).classList.remove("goal-achived");
     }
 }
 
