@@ -1,5 +1,5 @@
 ///////////////////
-// DOC variables //
+// DOM variables //
 ///////////////////
 
 let table = document.querySelector("#table-block");
@@ -19,10 +19,10 @@ levelSelector.addEventListener("change", createTable, false);
 //////////////////////
 
 let roundTime = 30+1;
+let score=0;
 let tableSize = table.rows.length -1;
 // added for clarity's sake
 let goalPos=tableSize;
-let score=0;
 
 ///////////////
 // functions // 
@@ -35,13 +35,14 @@ function createTable(){
     table.innerHTML="";
 
     let cellClass;
-    for( let row=0;row<tableSize+1;row++){ // plus one so it can create goals too
+    for( let row=0;row<tableSize+1;row++){ // +1 to create goals too
     
         let currentRow=table.insertRow();
         currentRow.className="row";
 
-        for ( let col = 0; col< tableSize+1; col++){ // plus one so it can create goals too
-            if(col === goalPos && row === goalPos){
+        for ( let col = 0; col< tableSize+1; col++){ // +1 to create goals too
+            
+            if(col === goalPos && row === goalPos){// to avoid creting the down right corner which will have no nodes to affect it and it will be a bug
                 break;
             } 
             
@@ -53,26 +54,25 @@ function createTable(){
             let currentCell = currentRow.insertCell();
             currentCell.className=cellClass;
             currentCell.innerHTML="0";
-        
-            
         }
     }
     init();
 }
 
 function init(){
-    resetVals();
-
-    buttons = document.querySelectorAll(".node");
-    buttons.forEach(button => button.addEventListener("click", trueOrFalse));
-    goals = document.querySelectorAll(".goal");
+    resetValues();
 
     rowsGoalsGenerater();
     colsGoalsGenerater();
 }
 
-function resetVals(){
-    roundTime = 30+1;
+function resetValues() {
+    buttons = document.querySelectorAll(".node");
+    buttons.forEach(button => button.addEventListener("click", trueOrFalse));
+    goals = document.querySelectorAll(".goal");
+    
+    roundTime = 30 + 1;
+
     for (let button = 0; button < buttons.length; button++) {
         buttons[button].classList.remove("node-true");
         buttons[button].innerHTML = 0;
@@ -80,30 +80,6 @@ function resetVals(){
 
     for (let goal = 0; goal < goals.length; goal++) {
         goals[goal].classList.remove("goal-achived");
-    }
-}
-
-// turns the value of a node 1/0 or true/ false
-function trueOrFalse(){
-    let row = this.parentElement.rowIndex;
-    let col= this.cellIndex;
-    let val= this.innerHTML;
-
-    if(val==1){
-        this.classList.remove("node-true");
-        this.innerHTML=0;
-    }else{
-        this.classList.add("node-true");
-        this.innerHTML=1;
-    }
-    
-    checkRow(row);
-    checkCol(col);
-
-    if(checkGoals()){
-        score+=tableSize;
-        scoreDsipaly.innerHTML=score;
-        init();
     }
 }
 
@@ -148,6 +124,30 @@ function colsGoalsGenerater() {
     }
 }
 
+// turns the value of a node 1/0 or true/ false
+function trueOrFalse(){
+    let row = this.parentElement.rowIndex;
+    let col= this.cellIndex;
+    let val= this.innerHTML;
+
+    if(val==1){
+        this.classList.remove("node-true");
+        this.innerHTML=0;
+    }else{
+        this.classList.add("node-true");
+        this.innerHTML=1;
+    }
+    
+    checkRow(row);
+    checkCol(col);
+
+    if(checkGoals()){
+        score+=tableSize;
+        scoreDsipaly.innerHTML=score;
+        init();
+    }
+}
+
 // checks if nodes values equals the row's goal
 function checkRow(row){
     let rowGoal= table.rows.item(row).cells.item(goalPos).innerHTML;
@@ -187,11 +187,6 @@ function checkGoals(){
     return true;
 }
 
-function checkStatue(){
-    if(roundTime<=0 && !isPlaying){
-    }
-}
-
 function timeReducer() {
     if (roundTime > 0) {
         roundTime--;
@@ -201,9 +196,6 @@ function timeReducer() {
     dispalaySeconds.innerHTML = roundTime;
 }
 
-function changeLevel(){
-    
-}
 ////////////
 // runing //
 ////////////
